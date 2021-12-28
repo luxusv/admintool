@@ -4,22 +4,22 @@ on:
   pull_request:
     branches:
      - master
-  workflow_dispatch:
-  schedule:
-    - cron: '53 05 01 */3 *' # Artifacts expire every 3 months
+#  workflow_dispatch:
+#  schedule:
+#    - cron: '53 05 01 */3 *' # Artifacts expire every 3 months
 jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [windows-latest]
         include:
           - os: windows-latest
             qt_arch: win32_msvc2019
             os_short: win
-          - os: ubuntu-latest
-            os_short: linux
-          - os: macos-latest
-            os_short: mac
+#          - os: ubuntu-latest
+#            os_short: linux
+#          - os: macos-latest
+#            os_short: mac
       fail-fast: false
     runs-on: ${{ matrix.os }}
     steps:
@@ -50,21 +50,21 @@ jobs:
 
       - name: Configure
         run: qmake SourceAdminTool.pro -config release
-      - name: Build Linux
-        if: startsWith(runner.os, 'Linux')
-        shell: bash
-        run: |
-          make -j4
-          mkdir -p package/admintool/lib
-          cp GeoLite2-Country.mmdb app_list_map.ini commands.xml qt.conf package/admintool
-          cp $Qt5_DIR/lib/{libQt5Widgets.so.5,libQt5Gui.so.5,libQt5Network.so.5,libQt5Core.so.5,libicui18n.so.56,libicuuc.so.56,libicudata.so.56} package/admintool/lib
-      - name: Build macOS
-        if: startsWith(runner.os, 'macOS')
-        run: |
-          make -j4
-          macdeployqt SourceAdminTool.app
-          mkdir package
-          mv SourceAdminTool.app package
+#      - name: Build Linux
+#        if: startsWith(runner.os, 'Linux')
+#        shell: bash
+#        run: |
+#          make -j4
+#          mkdir -p package/admintool/lib
+#          cp GeoLite2-Country.mmdb app_list_map.ini commands.xml qt.conf package/admintool
+#          cp $Qt5_DIR/lib/{libQt5Widgets.so.5,libQt5Gui.so.5,libQt5Network.so.5,libQt5Core.so.5,libicui18n.so.56,libicuuc.so.56,libicudata.so.56} package/admintool/lib
+#      - name: Build macOS
+#        if: startsWith(runner.os, 'macOS')
+#        run: |
+#          make -j4
+#          macdeployqt SourceAdminTool.app
+#          mkdir package
+#          mv SourceAdminTool.app package
       - name: Build Windows
         if: startsWith(runner.os, 'Windows')
         run: | 
