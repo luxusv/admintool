@@ -27,8 +27,8 @@ MainWindow::MainWindow(QWidget *parent) :
     settings->SetDefaultSettings();
     settings->ReadSettings();
     settings->GetCtxCommands();
-    pLogHandler = new LogHandler(this);
-    pLogHandler->createBind(u16logPort);
+//    pLogHandler = new LogHandler(this);
+//    pLogHandler->createBind(u16logPort);
 
     if(this->ui->browserTable->rowCount() > 0)
     {
@@ -53,7 +53,7 @@ MainWindow::~MainWindow()
     delete settings;
     serverList.clear();
     delete ui;
-    delete pLogHandler;
+//    delete pLogHandler;
     delete sayIter;
     delete commandIter;
 }
